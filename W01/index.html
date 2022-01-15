@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W01 Anastasia Yazvinskaya</title>
+
+    <script>
+        //Section 2
+        function showCongratulations(){
+            document.getElementById("result_display").innerHTML = "Congratulations, you did it!<p>You got the page to update!</p>"
+        }
+        //Section 3
+        function loadStory(){
+            var storyName = document.getElementById("name_input").value
+            var storyHTML = localStorage.getItem(storyName)
+            document.getElementById("story_editor").value = storyHTML
+        }
+        function saveStory(){
+            var storyName = document.getElementById("name_input").value
+            var storyHTML = document.getElementById("story_editor").value
+            localStorage.setItem(storyName, storyHTML)
+        }
+        function displayStory(){
+            var storyHTML = document.getElementById("story_editor").value
+            document.getElementById("story_display").innerHTML = storyHTML
+        }
+        //Section 4
+        function checkNumber(){
+            var numberAsText = document.getElementById("number_input").value
+            var aNumber = parseInt(numberAsText)
+            if(numberAsText != "" && !isNaN(aNumber)){
+                var remainder = Math.abs(aNumber % 2)
+                if(aNumber != 0 && remainder == 0){
+                    document.getElementById("type_display").innerHTML = aNumber + " is even."
+                }
+                else if(aNumber != 0 && remainder == 1){
+                    document.getElementById("type_display").innerHTML = aNumber + " is odd."
+                }
+                else {
+                    document.getElementById("type_display").innerHTML = "0 is neither even nor odd."
+                }
+            }
+            else {
+                document.getElementById("type_display").innerHTML = "Please enter a number."
+            }
+        }
+        //Section 6
+        var aClothingCustomer = {
+            "name": "Manuel",
+            "age": 22,
+            "inseam": 32.5,
+        }
+        function addAndSaveCustomer(){
+            var aName = document.getElementById("name_input").value
+            var anAge = document.getElementById("age_input").value * 1
+            var anInseam = document.getElementById("inseam_input").value * 1
+            var aClothingCustomer = {
+                "name":aName,
+                "age":anAge,
+                "inseam":anInseam
+            }
+            var allCustomers = null
+            var storedCustomersString = localStorage["all_customers"]
+            if(storedCustomersString == null){
+                allCustomers = []
+            }
+            else{
+                allCustomers = JSON.parse(storedCustomersString)
+            }
+            allCustomers.push(aClothingCustomer)
+            var allCustomersString = JSON.stringify(allCustomers)
+            localStorage["all_customers"] = allCustomersString
+            showAllCustomers()
+            
+            document.getElementById("name_input").value = null
+            document.getElementById("age_input").value = null
+            document.getElementById("inseam_input").value = null
+        }
+        function showAllCustomers(){
+            var storedCustomersString = localStorage["all_customers"]
+            if(storedCustomersString != null){
+                var allCustomers = JSON.parse(storedCustomersString)
+                var customerDisplayer =
+                document.getElementById("all_customers_display")
+                customerDisplayer.innerHTML = null
+                var numberOfCustomers = allCustomers.length
+                for (var i = 0; i < allCustomers.length; i++) {
+                    var aClothingCustomer = allCustomers[i]
+                    customerDisplayer.innerHTML += "<hr><p>Customer: "+
+                    aClothingCustomer["name"] +"</p>"+
+                    "<p>Age: "+ aClothingCustomer["age"] +
+                    "</p>"+"<p>Inseam: "+
+                    aClothingCustomer["inseam"] +"</p>"
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: rgba(149, 133, 255, 0.534);
+            color: rgb(110, 82, 6);
+        }
+        #home {
+            position: fixed;
+            right: 15px;
+            font-size: larger;
+            text-decoration: none;
+            color: rgb(151, 5, 18);
+        }
+        #home:hover {
+            font-weight: 900;
+        }
+        #result_display {
+            background-color: darkgray;
+        }
+        h3 {
+            margin-left: 30px;
+            color: #414141;
+        }
+        textarea {
+            width: 300px;
+            height: 200px;
+            background-color: lightyellow;
+        }
+        input {
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px #414141 inset;
+            height: 25px;
+            text-indent: 5px;
+        }
+    </style>
+</head>
+<body onload="showAllCustomers()">
+    <a href="../index.html" id="home">Back to Portfolio</a>
+    <h3>Section 1</h3>
+    <p>Hello</p>
+
+    <h3>Section 2</h3>
+    <button onclick="showCongratulations()">Click Me!</button>
+    <section id="result_display"></section>
+    
+    <h3>Section 3</h3>
+    <h1>Story Editor</h1>
+    Story Name: <input id="name_input"></input>
+    <section>
+        <button onclick="loadStory()">Find and Edit it</button>
+        <button onclick="saveStory()">Save it</button>
+        <button onclick="displayStory()">Display it</button>
+    </section>
+    <textarea id="story_editor" placeholder="Write a totally awesame story here."></textarea>
+    <section id="story_display"></section>
+
+    <h3>Section 4</h3>
+    <h1>Even or Odd???</h1>
+    Enter a number: <input id="number_input"></input>
+    <button onclick="checkNumber()">Check it!</button>
+    <section id="type_display"></section>
+
+    <h3>Section 5</h3>
+
+    <h3>Section 6</h3>
+    <div>
+        <section id="customer_entry_area">
+            <h1>Our Clothing Customers</h1>
+            <input id="name_input" placeholder="Name"></input>
+            <input id="age_input" placeholder="Age"></input>
+            <input id="inseam_input" placeholder="Inseam"></input>
+            <br>
+            <img src="add_customer.png" onclick="addAndSaveCustomer()"></img>
+        </section>
+        <section id="all_customers_display"></section>
+    </div>
+
+    <br><br>
+</body>
+</html>
